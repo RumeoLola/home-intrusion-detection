@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Sensor Status</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            background-color: #f0f0f0;
+        }
+        p {
+            background-color: green;
+            width: 150px;
+            height: 50px;
+            color: white;
+            text-align: center;
+            line-height: 50px; /* vertically center text */
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <p id="motionStatus">No motion detected</p>
+    <form method="POST" action="/control">
+        <button type="submit" name="action" value="stop">Stop alarm</button>
+        <button type="submit" name="action" value="start">Start alarm</button>
+    </form>
+    <script>
+        function fetchMotionData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('motionStatus').innerText = data.motion_status;
+                });
+        }
+        setInterval(fetchMotionData, 1000); // Fetch data every second
+    </script>
+</body>
+</html>
